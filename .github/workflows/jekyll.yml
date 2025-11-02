@@ -40,6 +40,16 @@ jobs:
           ruby-version: '3.1' # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 0 # Increment this number if you need to re-download cached gems
+# --- 💡 여기가 추가된 부분 (시작) ---
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # 테마에 따라 20 등으로 변경 가능
+          cache: 'npm'
+
+      - name: Install Node.js dependencies
+        run: npm install
+      # --- 💡 여기가 추가된 부분 (끝) ---
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
