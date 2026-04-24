@@ -1,0 +1,43 @@
+{{- $language := .Type | default "text" | lower -}}
+{{- $pageSlug := .Page.Title | default "page" | urlize -}}
+{{- with .Page.File -}}
+  {{- $pageSlug = .BaseFileName -}}
+{{- end -}}
+{{- $blockNumber := add .Ordinal 1 -}}
+{{- $bodyID := printf "code-block-%d" $blockNumber -}}
+{{- $result := transform.HighlightCodeBlock . -}}
+<figure class="code-block" data-code-block data-code-language="{{ $language }}" data-code-filename-base="{{ $pageSlug }}" data-code-index="{{ $blockNumber }}">
+  <figcaption class="code-block-header">
+    <span class="code-block-title">
+      <svg class="code-block-icon" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+        <path d="m8 9-4 3 4 3"></path>
+        <path d="m16 9 4 3-4 3"></path>
+      </svg>
+      <span class="code-block-language">{{ $language }}</span>
+    </span>
+    <span class="code-block-actions">
+      <button class="code-block-action" type="button" data-code-download aria-label="Download code" title="Download code">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="m7 10 5 5 5-5"></path>
+          <path d="M5 21h14"></path>
+        </svg>
+      </button>
+      <button class="code-block-action" type="button" data-code-copy aria-label="Copy code" title="Copy code">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <rect x="9" y="3" width="11" height="14" rx="1.5"></rect>
+          <path d="M5 7h10v14H5z"></path>
+        </svg>
+      </button>
+      <button class="code-block-action" type="button" data-code-collapse aria-label="Collapse code" aria-expanded="true" aria-controls="{{ $bodyID }}" title="Collapse code">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="m6 15 6-6 6 6"></path>
+        </svg>
+      </button>
+    </span>
+  </figcaption>
+  <div class="code-block-body" id="{{ $bodyID }}">
+    <pre tabindex="0" class="chroma"><code class="language-{{ $language }}" data-lang="{{ $language }}">{{ $result.Inner }}</code></pre>
+  </div>
+  <script type="application/json" data-code-source>{{ .Inner | jsonify | safeJS }}</script>
+</figure>
