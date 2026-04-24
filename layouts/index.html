@@ -1,0 +1,28 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="hero-image" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="eyebrow">GitHub Pages + Hugo</p>
+    <h1>{{ site.Title }}</h1>
+    <p>{{ site.Params.intro }}</p>
+    <div class="hero-actions">
+      <a class="button primary" href="{{ "posts/" | relURL }}">Read posts</a>
+      <a class="button secondary" href="{{ "about/" | relURL }}">About this blog</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Latest</p>
+    <h2>Recent Posts</h2>
+  </div>
+  <div class="post-grid">
+    {{ range first 6 (where site.RegularPages "Section" "posts") }}
+      {{ partial "post-card.html" . }}
+    {{ else }}
+      <p>No posts yet.</p>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
