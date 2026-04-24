@@ -1,5 +1,4 @@
 (function () {
-  var storageKey = "content-navigator-collapsed";
   var layout = document.querySelector(".article-layout-with-navigator");
   var toggle = document.querySelector("[data-content-navigator-toggle]");
   var navigatorBody = document.querySelector("[data-content-navigator-body]");
@@ -44,23 +43,7 @@
 
   var pending = false;
 
-  function getStoredCollapsed() {
-    try {
-      return localStorage.getItem(storageKey) === "true";
-    } catch (error) {
-      return false;
-    }
-  }
-
-  function storeCollapsed(collapsed) {
-    try {
-      localStorage.setItem(storageKey, collapsed ? "true" : "false");
-    } catch (error) {
-      return;
-    }
-  }
-
-  function applyNavigatorState(collapsed, shouldStore) {
+  function applyNavigatorState(collapsed) {
     var label = collapsed ? "Show contents" : "Hide contents";
 
     if (!layout || !toggle) {
@@ -74,10 +57,6 @@
 
     if (navigatorBody) {
       navigatorBody.setAttribute("aria-hidden", collapsed ? "true" : "false");
-    }
-
-    if (shouldStore) {
-      storeCollapsed(collapsed);
     }
   }
 
@@ -149,11 +128,11 @@
   });
 
   if (toggle && layout) {
-    applyNavigatorState(getStoredCollapsed(), false);
+    applyNavigatorState(false);
 
     toggle.addEventListener("click", function () {
       var collapsed = !layout.classList.contains("is-navigator-collapsed");
-      applyNavigatorState(collapsed, true);
+      applyNavigatorState(collapsed);
       scheduleUpdate();
     });
   }
