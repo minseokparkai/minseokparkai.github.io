@@ -971,23 +971,8 @@ body.search-open {
 }
 
 @media (max-width: 820px) {
-  :root {
-    --mobile-header-offset: 8.5rem;
-  }
-
-  html {
-    scroll-padding-top: var(--mobile-header-offset);
-  }
-
-  main {
-    padding-top: var(--mobile-header-offset);
-  }
-
   .site-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
+    position: static;
   }
 
   .nav {
@@ -1021,12 +1006,6 @@ body.search-open {
   .post-grid,
   .post-list {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 360px) {
-  :root {
-    --mobile-header-offset: 11.25rem;
   }
 }
 
