@@ -10,6 +10,12 @@ summaryLength = 24
   intro = "Notes from building, debugging, and learning with code."
   github = "https://github.com/minseokparkai"
 
+  [params.comments]
+    enabled = true
+    repo = "minseokparkai/minseokparkai.github.io"
+    issueTerm = "pathname"
+    label = "comment"
+
 [outputs]
   home = ['html', 'rss', 'json']
 

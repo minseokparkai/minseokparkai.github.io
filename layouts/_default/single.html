@@ -50,6 +50,7 @@
     <div class="article-body">
       {{ .Content }}
     </div>
+    {{ partial "comments.html" . }}
   </article>
 </div>
 {{ end }}

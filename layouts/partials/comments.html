@@ -1,0 +1,17 @@
+{{ $page := . }}
+{{ with site.Params.comments }}
+  {{ if and (eq $page.Section "posts") .enabled .repo }}
+    <section class="comments" aria-labelledby="comments-title" data-comments data-comments-repo="{{ .repo }}" data-comments-issue-term="{{ .issueTerm | default "pathname" }}" data-comments-label="{{ .label | default "comment" }}">
+      <header class="comments-header">
+        <p class="eyebrow">Discussion</p>
+        <h2 id="comments-title">Comments</h2>
+      </header>
+      <div class="comments-widget" data-comments-widget>
+        <p class="comments-loading">Loading GitHub comments...</p>
+      </div>
+      <noscript>
+        <p class="comments-noscript">JavaScript is required to load comments.</p>
+      </noscript>
+    </section>
+  {{ end }}
+{{ end }}
