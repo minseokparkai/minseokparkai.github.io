@@ -10,6 +10,89 @@
   --warm: #c4661f;
   --cool: #295f98;
   --shadow: 0 18px 60px rgba(31, 41, 55, 0.12);
+  --header-bg: rgba(247, 244, 237, 0.88);
+  --header-border: rgba(222, 216, 205, 0.8);
+  --nav-hover-bg: #ffffff;
+  --brand-bg: var(--ink);
+  --brand-ink: var(--bg);
+  --hero-fade: rgba(247, 244, 237, 0);
+  --hero-ink: #ffffff;
+  --hero-muted: rgba(255, 255, 255, 0.88);
+  --hero-eyebrow: #f6c177;
+  --hero-button-bg: #ffffff;
+  --hero-button-ink: var(--ink);
+  --hero-button-border: rgba(255, 255, 255, 0.48);
+  --tag-border: rgba(15, 118, 110, 0.25);
+  --tag-bg: transparent;
+  --topic-count-bg: rgba(15, 118, 110, 0.1);
+  --topic-hover-border: rgba(15, 118, 110, 0.45);
+  --topic-shadow: 0 10px 28px rgba(31, 41, 55, 0.08);
+  --code-bg: rgba(255, 255, 255, 0.72);
+  --focus-ring: rgba(15, 118, 110, 0.5);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111416;
+    --surface: #1b1f20;
+    --ink: #f4f0e8;
+    --muted: #b8b3a8;
+    --line: #37342d;
+    --accent: #5eead4;
+    --accent-strong: #99f6e4;
+    --warm: #f6c177;
+    --cool: #93c5fd;
+    --shadow: 0 18px 60px rgba(0, 0, 0, 0.34);
+    --header-bg: rgba(17, 20, 22, 0.88);
+    --header-border: rgba(55, 52, 45, 0.8);
+    --nav-hover-bg: rgba(255, 255, 255, 0.08);
+    --brand-bg: var(--ink);
+    --brand-ink: var(--bg);
+    --hero-fade: rgba(17, 20, 22, 0);
+    --hero-button-bg: #f4f0e8;
+    --hero-button-ink: #111416;
+    --tag-border: rgba(94, 234, 212, 0.28);
+    --tag-bg: rgba(94, 234, 212, 0.08);
+    --topic-count-bg: rgba(94, 234, 212, 0.12);
+    --topic-hover-border: rgba(94, 234, 212, 0.45);
+    --topic-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+    --code-bg: rgba(255, 255, 255, 0.06);
+    --focus-ring: rgba(94, 234, 212, 0.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111416;
+  --surface: #1b1f20;
+  --ink: #f4f0e8;
+  --muted: #b8b3a8;
+  --line: #37342d;
+  --accent: #5eead4;
+  --accent-strong: #99f6e4;
+  --warm: #f6c177;
+  --cool: #93c5fd;
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.34);
+  --header-bg: rgba(17, 20, 22, 0.88);
+  --header-border: rgba(55, 52, 45, 0.8);
+  --nav-hover-bg: rgba(255, 255, 255, 0.08);
+  --brand-bg: var(--ink);
+  --brand-ink: var(--bg);
+  --hero-fade: rgba(17, 20, 22, 0);
+  --hero-button-bg: #f4f0e8;
+  --hero-button-ink: #111416;
+  --tag-border: rgba(94, 234, 212, 0.28);
+  --tag-bg: rgba(94, 234, 212, 0.08);
+  --topic-count-bg: rgba(94, 234, 212, 0.12);
+  --topic-hover-border: rgba(94, 234, 212, 0.45);
+  --topic-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  --code-bg: rgba(255, 255, 255, 0.06);
+  --focus-ring: rgba(94, 234, 212, 0.5);
 }
 
 * {
@@ -38,7 +121,7 @@ a {
   top: -4rem;
   z-index: 10;
   background: var(--ink);
-  color: white;
+  color: var(--bg);
   padding: 0.6rem 0.9rem;
   border-radius: 6px;
 }
@@ -51,9 +134,9 @@ a {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: rgba(247, 244, 237, 0.88);
+  background: var(--header-bg);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(222, 216, 205, 0.8);
+  border-bottom: 1px solid var(--header-border);
 }
 
 .nav {
@@ -84,8 +167,8 @@ a {
   width: 2.35rem;
   height: 2.35rem;
   border-radius: 8px;
-  background: var(--ink);
-  color: white;
+  background: var(--brand-bg);
+  color: var(--brand-ink);
   font-size: 0.8rem;
 }
 
@@ -95,7 +178,16 @@ a {
   justify-content: flex-end;
 }
 
-.nav-links a {
+.theme-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.nav-links a,
+.theme-toggle {
   border-radius: 999px;
   padding: 0.55rem 0.8rem;
   color: var(--muted);
@@ -103,9 +195,18 @@ a {
   text-decoration: none;
 }
 
-.nav-links a:hover {
-  background: white;
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--nav-hover-bg);
   color: var(--ink);
+}
+
+.nav-links a:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .hero {
@@ -133,14 +234,14 @@ a {
   inset: auto 0 0;
   height: 35%;
   z-index: -1;
-  background: linear-gradient(0deg, var(--bg), rgba(247, 244, 237, 0));
+  background: linear-gradient(0deg, var(--bg), var(--hero-fade));
 }
 
 .hero-content {
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 5.5rem 0 7rem;
-  color: white;
+  color: var(--hero-ink);
 }
 
 .eyebrow {
@@ -153,7 +254,7 @@ a {
 }
 
 .hero .eyebrow {
-  color: #f6c177;
+  color: var(--hero-eyebrow);
 }
 
 .hero h1,
@@ -172,7 +273,7 @@ a {
 .hero p:not(.eyebrow) {
   max-width: 620px;
   margin: 1.2rem 0 0;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--hero-muted);
   font-size: 1.25rem;
 }
 
@@ -195,13 +296,13 @@ a {
 }
 
 .button.primary {
-  background: #ffffff;
-  color: var(--ink);
+  background: var(--hero-button-bg);
+  color: var(--hero-button-ink);
 }
 
 .button.secondary {
-  border: 1px solid rgba(255, 255, 255, 0.48);
-  color: white;
+  border: 1px solid var(--hero-button-border);
+  color: var(--hero-ink);
 }
 
 .section,
@@ -287,8 +388,9 @@ a {
 }
 
 .tag-list li {
-  border: 1px solid rgba(15, 118, 110, 0.25);
+  border: 1px solid var(--tag-border);
   border-radius: 999px;
+  background: var(--tag-bg);
   padding: 0.25rem 0.55rem;
   color: var(--accent-strong);
   font-size: 0.8rem;
@@ -331,7 +433,7 @@ a {
   color: var(--ink);
   font-weight: 800;
   text-decoration: none;
-  box-shadow: 0 10px 28px rgba(31, 41, 55, 0.08);
+  box-shadow: var(--topic-shadow);
 }
 
 .topic-pill span:first-child {
@@ -340,7 +442,7 @@ a {
 
 .topic-pill:hover,
 .topic-pill:focus-visible {
-  border-color: rgba(15, 118, 110, 0.45);
+  border-color: var(--topic-hover-border);
   color: var(--accent-strong);
 }
 
@@ -351,7 +453,7 @@ a {
   min-width: 1.65rem;
   height: 1.65rem;
   border-radius: 999px;
-  background: rgba(15, 118, 110, 0.1);
+  background: var(--topic-count-bg);
   color: var(--accent-strong);
   font-size: 0.82rem;
 }
@@ -405,12 +507,20 @@ a {
 
 .article-body pre {
   overflow-x: auto;
+  border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--code-bg);
   padding: 1rem;
 }
 
 .article-body code {
   font-size: 0.95em;
+}
+
+.article-body :not(pre) > code {
+  border-radius: 6px;
+  background: var(--code-bg);
+  padding: 0.12rem 0.3rem;
 }
 
 .site-footer {

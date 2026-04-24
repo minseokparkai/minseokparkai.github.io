@@ -3,12 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
   {{ with site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
   <link rel="canonical" href="{{ .Permalink }}">
   {{ with .OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">{{ end }}
   <link rel="icon" type="image/png" href="{{ "images/favicon.png" | relURL }}">
+  <script>
+    (function () {
+      var storageKey = "theme-preference";
+
+      try {
+        var preference = localStorage.getItem(storageKey);
+
+        if (preference === "light" || preference === "dark") {
+          document.documentElement.dataset.theme = preference;
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    }());
+  </script>
   {{ $style := resources.Get "css/main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 </head>
@@ -25,6 +41,7 @@
           <a href="{{ .URL }}">{{ .Name }}</a>
         {{ end }}
         {{ with site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Theme: System">Theme: System</button>
       </div>
     </nav>
   </header>
@@ -37,5 +54,72 @@
     <p>Built with Hugo. Published from GitHub.</p>
     <p>&copy; {{ now.Year }} {{ site.Params.author }}.</p>
   </footer>
+  <script>
+    (function () {
+      var storageKey = "theme-preference";
+      var modes = ["system", "light", "dark"];
+      var labels = {
+        system: "Theme: System",
+        light: "Theme: Light",
+        dark: "Theme: Dark"
+      };
+      var button = document.querySelector("[data-theme-toggle]");
+
+      if (!button) {
+        return;
+      }
+
+      function normalizePreference(preference) {
+        return modes.indexOf(preference) === -1 ? "system" : preference;
+      }
+
+      function getPreference() {
+        try {
+          return normalizePreference(localStorage.getItem(storageKey));
+        } catch (error) {
+          return "system";
+        }
+      }
+
+      function storePreference(preference) {
+        try {
+          if (preference === "system") {
+            localStorage.removeItem(storageKey);
+          } else {
+            localStorage.setItem(storageKey, preference);
+          }
+        } catch (error) {
+          return;
+        }
+      }
+
+      function getNextPreference(preference) {
+        return modes[(modes.indexOf(preference) + 1) % modes.length];
+      }
+
+      function applyPreference(preference) {
+        var nextPreference = getNextPreference(preference);
+
+        if (preference === "light" || preference === "dark") {
+          document.documentElement.dataset.theme = preference;
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+
+        button.textContent = labels[preference];
+        button.setAttribute("aria-label", labels[preference] + ". Switch to " + nextPreference + " theme.");
+        button.setAttribute("title", labels[preference]);
+      }
+
+      var currentPreference = getPreference();
+      applyPreference(currentPreference);
+
+      button.addEventListener("click", function () {
+        currentPreference = getNextPreference(currentPreference);
+        storePreference(currentPreference);
+        applyPreference(currentPreference);
+      });
+    }());
+  </script>
 </body>
 </html>
