@@ -22,6 +22,19 @@ This is a Hugo static blog published at `https://minseokparkai.github.io/`.
 - Keep desktop and wider tablet widths above `820px` using the existing sticky header behavior.
 - At `max-width: 820px`, the header uses normal document flow so the mobile navigator starts at the top of the page and scrolls away with the content.
 
+## Content Navigator
+
+Post pages have a Google Docs-style content navigator generated from Hugo's `.TableOfContents`.
+
+- `hugo.toml` owns `[markup.tableOfContents]`; keep the navigator limited to `h2` and `h3` headings unless the user asks for a different outline depth.
+- `layouts/_default/single.html` renders the desktop navigator before the article so it appears on the left, and renders the mobile navigator as a collapsible block below the post header.
+- `assets/css/main.css` owns the left sticky desktop panel, collapsed rail state, active-link styling, and mobile collapsible panel.
+- `assets/js/content-navigator.js` owns the desktop show/hide toggle, `localStorage` persistence under `content-navigator-collapsed`, scroll-synced active tracking, and mobile close-on-select behavior.
+
+Keep the navigator posts-only and dependency-free. The desktop navigator should stay on the left side, collapse to a narrow rail instead of a modal/overlay, and keep `aria-expanded`, `aria-controls`, labels, and titles synced with state. Active tracking should update both desktop and mobile links while scrolling, after hash changes, and after navigator link clicks.
+
+When changing navigator behavior, verify post-only rendering, left-side desktop placement, collapse/expand persistence after refresh, scroll-synced active highlighting, correct anchor scrolling with the sticky header, mobile fit, and light/dark/system theme readability.
+
 ## Content
 
 Posts live in `content/posts/`.
@@ -173,6 +186,7 @@ Before saying a task is done, Codex should check:
 - Internal links and image paths are valid for Hugo.
 - Taxonomy or Topics changes preserve `/tags/`, `/categories/`, and `/topics/` URLs.
 - Search changes preserve the posts-only `/index.json` contract unless the user asks for a broader index.
+- Content navigator changes preserve posts-only rendering, left-side desktop placement, collapse persistence, and scroll-synced active tracking.
 - `hugo --renderToMemory --panicOnWarning --printPathWarnings` passes.
 - `hugo --gc --minify` passes when publishing or changing templates/config/styles.
 - Deployment-impacting changes respect the GitHub Pages workflow and do not require committing generated files.

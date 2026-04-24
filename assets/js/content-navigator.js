@@ -1,4 +1,8 @@
 (function () {
+  var storageKey = "content-navigator-collapsed";
+  var layout = document.querySelector(".article-layout-with-navigator");
+  var toggle = document.querySelector("[data-content-navigator-toggle]");
+  var navigatorBody = document.querySelector("[data-content-navigator-body]");
   var links = Array.prototype.slice.call(
     document.querySelectorAll("[data-content-navigator] a[href^='#'], [data-content-navigator-mobile] a[href^='#']")
   );
@@ -39,6 +43,43 @@
   }
 
   var pending = false;
+
+  function getStoredCollapsed() {
+    try {
+      return localStorage.getItem(storageKey) === "true";
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function storeCollapsed(collapsed) {
+    try {
+      localStorage.setItem(storageKey, collapsed ? "true" : "false");
+    } catch (error) {
+      return;
+    }
+  }
+
+  function applyNavigatorState(collapsed, shouldStore) {
+    var label = collapsed ? "Show contents" : "Hide contents";
+
+    if (!layout || !toggle) {
+      return;
+    }
+
+    layout.classList.toggle("is-navigator-collapsed", collapsed);
+    toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    toggle.setAttribute("aria-label", label);
+    toggle.setAttribute("title", label);
+
+    if (navigatorBody) {
+      navigatorBody.setAttribute("aria-hidden", collapsed ? "true" : "false");
+    }
+
+    if (shouldStore) {
+      storeCollapsed(collapsed);
+    }
+  }
 
   function getScrollOffset() {
     var header = document.querySelector(".site-header");
@@ -90,15 +131,32 @@
 
   links.forEach(function (link) {
     link.addEventListener("click", function () {
+      var id = getTargetId(link);
       var mobileNavigator = link.closest("[data-content-navigator-mobile]");
+
+      if (id) {
+        setActiveHeading(id);
+      }
 
       if (mobileNavigator) {
         window.setTimeout(function () {
           mobileNavigator.open = false;
         }, 150);
       }
+
+      scheduleUpdate();
     });
   });
+
+  if (toggle && layout) {
+    applyNavigatorState(getStoredCollapsed(), false);
+
+    toggle.addEventListener("click", function () {
+      var collapsed = !layout.classList.contains("is-navigator-collapsed");
+      applyNavigatorState(collapsed, true);
+      scheduleUpdate();
+    });
+  }
 
   window.addEventListener("scroll", scheduleUpdate, { passive: true });
   window.addEventListener("resize", scheduleUpdate);
