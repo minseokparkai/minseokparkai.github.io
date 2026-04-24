@@ -32,9 +32,9 @@ Post pages have a Google Docs-style content navigator generated from Hugo's `.Ta
 - `assets/css/main.css` owns the left sticky desktop panel, collapsed rail state, active-link styling, and mobile collapsible panel.
 - `assets/js/content-navigator.js` owns the desktop show/hide toggle, `localStorage` persistence under `content-navigator-collapsed`, scroll-synced active tracking, and mobile close-on-select behavior.
 
-Keep the navigator posts-only and dependency-free. The desktop navigator should stay on the left side, collapse to a narrow rail instead of a modal/overlay, and keep `aria-expanded`, `aria-controls`, labels, and titles synced with state. Active tracking should update both desktop and mobile links while scrolling, after hash changes, and after navigator link clicks.
+Keep the navigator posts-only and dependency-free. Post detail pages use the `article-layout-post` width contract in `assets/css/main.css`: the article targets a centered `1020px` content column where viewport space allows. The desktop navigator should stay on the left side, expand as an in-flow sidebar that pushes the article to the right, collapse to a narrow rail instead of a modal/overlay, and use matching collapsed rails so the article recenters when the navigator is hidden. Keep `aria-expanded`, `aria-controls`, labels, and titles synced with state. Active tracking should update both desktop and mobile links while scrolling, after hash changes, and after navigator link clicks.
 
-When changing navigator behavior, verify post-only rendering, left-side desktop placement, collapse/expand persistence after refresh, scroll-synced active highlighting, correct anchor scrolling with the sticky header, mobile fit, and light/dark/system theme readability.
+When changing navigator behavior, verify post-only rendering, left-side desktop placement, expanded sidebar push, centered collapsed article, collapse/expand persistence after refresh, scroll-synced active highlighting, correct anchor scrolling with the sticky header, mobile fit, and light/dark/system theme readability.
 
 ## Content
 
@@ -204,7 +204,7 @@ Before saying a task is done, Codex should check:
 - Taxonomy or Topics changes preserve `/tags/`, `/categories/`, and `/topics/` URLs.
 - Post card taxonomy changes preserve category-first/tag-second ordering, the 5-item maximum, and clickable taxonomy archive links.
 - Search changes preserve the posts-only `/index.json` contract unless the user asks for a broader index.
-- Content navigator changes preserve posts-only rendering, left-side desktop placement, collapse persistence, and scroll-synced active tracking.
+- Content navigator changes preserve posts-only rendering, left-side desktop placement, expanded-sidebar article push, centered collapsed article, collapse persistence, and scroll-synced active tracking.
 - Comment changes preserve post-only rendering and the `pathname` Utterances issue mapping unless the user asks for a broader scope.
 - `hugo --renderToMemory --panicOnWarning --printPathWarnings` passes.
 - `hugo --gc --minify` passes when publishing or changing templates/config/styles.
