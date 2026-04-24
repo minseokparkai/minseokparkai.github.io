@@ -1,0 +1,36 @@
+baseURL = 'https://minseokparkai.github.io/'
+languageCode = 'en-us'
+title = "Minseok GitBlog"
+enableRobotsTXT = true
+summaryLength = 24
+
+[params]
+  author = "Minseok Park"
+  description = "A technical blog about Git, coding notes, projects, and learning in public."
+  intro = "Notes from building, debugging, and learning with code."
+  github = "https://github.com/minseokparkai"
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[menu]
+  [[menu.main]]
+    name = "Posts"
+    pageRef = "/posts"
+    weight = 10
+  [[menu.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 20
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    style = "github"
+  [markup.goldmark.renderer]
+    unsafe = true

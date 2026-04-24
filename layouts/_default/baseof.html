@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="{{ site.Language.LanguageCode | default "en" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+  {{ with site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ with .OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">{{ end }}
+  <link rel="icon" type="image/png" href="{{ "images/favicon.png" | relURL }}">
+  {{ $style := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }} home">
+        <span class="brand-mark">GB</span>
+        <span>{{ site.Title }}</span>
+      </a>
+      <div class="nav-links">
+        {{ range site.Menus.main }}
+          <a href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+        {{ with site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer class="site-footer">
+    <p>Built with Hugo. Published from GitHub.</p>
+    <p>&copy; {{ now.Year }} {{ site.Params.author }}.</p>
+  </footer>
+</body>
+</html>
