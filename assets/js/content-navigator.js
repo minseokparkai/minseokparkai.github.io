@@ -1,12 +1,12 @@
 (function () {
   var layout = document.querySelector(".article-layout-with-navigator");
+  var desktopNavigator = document.querySelector("[data-content-navigator]");
   var toggle = document.querySelector("[data-content-navigator-toggle]");
   var navigatorBody = document.querySelector("[data-content-navigator-body]");
-  var links = Array.prototype.slice.call(
-    document.querySelectorAll("[data-content-navigator] a[href^='#'], [data-content-navigator-mobile] a[href^='#']")
-  );
+  var desktopLinks = desktopNavigator ? Array.prototype.slice.call(desktopNavigator.querySelectorAll("a[href^='#']")) : [];
+  var mobileLinks = Array.prototype.slice.call(document.querySelectorAll("[data-content-navigator-mobile] a[href^='#']"));
 
-  if (!links.length) {
+  if (!desktopLinks.length) {
     return;
   }
 
@@ -25,7 +25,7 @@
   }
 
   var seen = {};
-  var headings = links.reduce(function (items, link) {
+  var headings = desktopLinks.reduce(function (items, link) {
     var id = getTargetId(link);
     var heading = id && !seen[id] ? document.getElementById(id) : null;
 
@@ -42,6 +42,7 @@
   }
 
   var pending = false;
+  var activeHeadingId = headings[0].id;
 
   function applyNavigatorState(collapsed) {
     var label = collapsed ? "Show contents" : "Hide contents";
@@ -70,8 +71,48 @@
     return header.offsetHeight + 24;
   }
 
+  function revealActiveDesktopLink(activeLink) {
+    var navigatorRect;
+    var linkRect;
+    var padding = 12;
+
+    if (!desktopNavigator || !activeLink || !desktopNavigator.getClientRects().length) {
+      return;
+    }
+
+    if (layout && layout.classList.contains("is-navigator-collapsed")) {
+      return;
+    }
+
+    navigatorRect = desktopNavigator.getBoundingClientRect();
+    linkRect = activeLink.getBoundingClientRect();
+
+    if (linkRect.top < navigatorRect.top + padding) {
+      desktopNavigator.scrollTop -= navigatorRect.top + padding - linkRect.top;
+    } else if (linkRect.bottom > navigatorRect.bottom - padding) {
+      desktopNavigator.scrollTop += linkRect.bottom - (navigatorRect.bottom - padding);
+    }
+  }
+
   function setActiveHeading(id) {
-    links.forEach(function (link) {
+    var activeLink = null;
+
+    activeHeadingId = id;
+
+    desktopLinks.forEach(function (link) {
+      var isActive = getTargetId(link) === id;
+
+      link.classList.toggle("is-active", isActive);
+
+      if (isActive) {
+        link.setAttribute("aria-current", "location");
+        activeLink = link;
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+
+    mobileLinks.forEach(function (link) {
       var isActive = getTargetId(link) === id;
 
       link.classList.toggle("is-active", isActive);
@@ -82,6 +123,31 @@
         link.removeAttribute("aria-current");
       }
     });
+
+    revealActiveDesktopLink(activeLink);
+  }
+
+  function activateHashHeading() {
+    var id;
+
+    if (!window.location.hash) {
+      return false;
+    }
+
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch (error) {
+      id = window.location.hash.slice(1);
+    }
+
+    if (id && document.getElementById(id) && desktopLinks.some(function (link) {
+      return getTargetId(link) === id;
+    })) {
+      setActiveHeading(id);
+      return true;
+    }
+
+    return false;
   }
 
   function updateActiveHeading() {
@@ -108,7 +174,7 @@
     window.requestAnimationFrame(updateActiveHeading);
   }
 
-  links.forEach(function (link) {
+  desktopLinks.concat(mobileLinks).forEach(function (link) {
     link.addEventListener("click", function () {
       var id = getTargetId(link);
       var mobileNavigator = link.closest("[data-content-navigator-mobile]");
@@ -133,13 +199,27 @@
     toggle.addEventListener("click", function () {
       var collapsed = !layout.classList.contains("is-navigator-collapsed");
       applyNavigatorState(collapsed);
+      setActiveHeading(activeHeadingId);
       scheduleUpdate();
     });
   }
 
   window.addEventListener("scroll", scheduleUpdate, { passive: true });
   window.addEventListener("resize", scheduleUpdate);
-  window.addEventListener("hashchange", scheduleUpdate);
-  window.addEventListener("load", scheduleUpdate);
-  updateActiveHeading();
+  window.addEventListener("hashchange", function () {
+    window.setTimeout(function () {
+      if (!activateHashHeading()) {
+        scheduleUpdate();
+      }
+    }, 0);
+  });
+  window.addEventListener("load", function () {
+    if (!activateHashHeading()) {
+      scheduleUpdate();
+    }
+  });
+
+  if (!activateHashHeading()) {
+    updateActiveHeading();
+  }
 }());
