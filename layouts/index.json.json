@@ -1,0 +1,27 @@
+{{- $posts := slice -}}
+{{- range (where (where site.RegularPages "Section" "posts") "Draft" "ne" true).ByDate.Reverse -}}
+  {{- $description := "" -}}
+  {{- with .Params.description -}}
+    {{- $description = . | plainify | htmlUnescape -}}
+  {{- else -}}
+    {{- $description = .Summary | plainify | htmlUnescape -}}
+  {{- end -}}
+  {{- $tags := slice -}}
+  {{- with .Params.tags -}}
+    {{- $tags = . -}}
+  {{- end -}}
+  {{- $categories := slice -}}
+  {{- with .Params.categories -}}
+    {{- $categories = . -}}
+  {{- end -}}
+  {{- $posts = $posts | append (dict
+    "title" .Title
+    "description" $description
+    "date" (.Date.Format "2006-01-02")
+    "permalink" .RelPermalink
+    "tags" $tags
+    "categories" $categories
+    "content" (.Plain | htmlUnescape)
+  ) -}}
+{{- end -}}
+{{- $posts | jsonify -}}

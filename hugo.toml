@@ -10,6 +10,9 @@ summaryLength = 24
   intro = "Notes from building, debugging, and learning with code."
   github = "https://github.com/minseokparkai"
 
+[outputs]
+  home = ['html', 'rss', 'json']
+
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
