@@ -2,7 +2,7 @@
 {{ $hasToc := and (eq .Section "posts") (gt (len (findRE "<a\\s" .TableOfContents)) 0) }}
 {{ $mobileToc := replace .TableOfContents `id="TableOfContents"` `id="content-navigator-mobile-list" class="content-navigator-links"` }}
 {{ $desktopToc := replace .TableOfContents `id="TableOfContents"` `id="content-navigator-desktop-list" class="content-navigator-links"` }}
-<div class="{{ if $hasToc }}article-layout article-layout-with-navigator{{ else }}article-layout{{ end }}">
+<div class="article-layout{{ if eq .Section "posts" }} article-layout-post{{ end }}{{ if $hasToc }} article-layout-with-navigator{{ end }}">
   {{ if $hasToc }}
     <aside class="content-navigator-sidebar" aria-label="Post contents">
       <div class="content-navigator content-navigator-desktop" data-content-navigator>
