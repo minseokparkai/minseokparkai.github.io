@@ -40,7 +40,6 @@
         {{ range site.Menus.main }}
           <a href="{{ .URL }}">{{ .Name }}</a>
         {{ end }}
-        {{ with site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
         <button class="search-toggle" type="button" data-search-open aria-controls="site-search" aria-haspopup="dialog">
           <span class="search-toggle-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -50,7 +49,6 @@
           </span>
           <span>Search</span>
         </button>
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Theme: System">Theme: System</button>
       </div>
     </nav>
   </header>
@@ -60,8 +58,16 @@
   </main>
 
   <footer class="site-footer">
-    <p>Built with Hugo. Published from GitHub.</p>
-    <p>&copy; {{ now.Year }} {{ site.Params.author }}.</p>
+    <div class="footer-inner">
+      <div class="footer-copy">
+        <p>Built with Hugo. Published from GitHub.</p>
+        <p>&copy; {{ now.Year }} {{ site.Params.author }}.</p>
+      </div>
+      <div class="footer-actions" aria-label="Footer actions">
+        {{ with site.Params.github }}<a class="footer-action" href="{{ . }}">GitHub</a>{{ end }}
+        <button class="theme-toggle footer-action" type="button" data-theme-toggle aria-label="Theme: System">Theme: System</button>
+      </div>
+    </div>
   </footer>
   {{ $searchIndex := "index.json" | relURL }}
   {{ with site.Home.OutputFormats.Get "json" }}
