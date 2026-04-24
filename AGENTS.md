@@ -126,7 +126,9 @@ The site has a universal toolbar for fenced Markdown code blocks.
 
 Keep this feature first-party and dependency-free. Use Hugo's `transform.HighlightCodeBlock` so Chroma highlighting options still work. Copy/download actions should use the original fence contents, not the syntax-highlighted DOM text, and should trim only trailing fence line breaks. For example, an `html` fence in `content/posts/01-codex-primer.md` should copy exactly `<button>날 클릭해</button>` and download as `01-codex-primer-code-1.html`.
 
-When changing code block behavior, verify language labels, copy, download extension fallback to `.txt`, collapse/expand ARIA state, keyboard focus states, horizontal scrolling, mobile fit, and light/dark/system theme readability.
+The copy button also shows a compact auto-dismissing status alert from the rendered `[data-code-copy-alert]` live region. Keep the alert non-blocking, per-code-block, dependency-free, and synced with copy success/failure state.
+
+When changing code block behavior, verify language labels, copy, copy success/failure alert timing, download extension fallback to `.txt`, collapse/expand ARIA state, keyboard focus states, horizontal scrolling, mobile fit, and light/dark/system theme readability.
 
 ## Dark Mode
 
