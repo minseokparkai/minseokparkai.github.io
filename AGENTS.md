@@ -104,7 +104,8 @@ The site has a three-state theme control in `layouts/_default/baseof.html`.
 - Explicit `Light` and `Dark` choices are stored in `localStorage` under `theme-preference`.
 - Forced themes are applied by setting `data-theme="light"` or `data-theme="dark"` on the root `<html>` element.
 - Keep the small head script before the stylesheet link so saved themes are applied before CSS loads and the page avoids a theme flash.
-- The footer button cycles `System -> Light -> Dark -> System`; keep button text and ARIA labels in sync with that order.
+- The footer button is icon-only and cycles `System -> Light -> Dark -> System`; keep CSS-drawn computer, sun, and moon icons synced through `data-theme-mode`.
+- Because the theme button has no visible text, keep `aria-label` and `title` synced with the current mode and next action.
 - The GitHub link lives in the footer action row with the theme button; keep the header focused on internal navigation and Search.
 
 Theme colors live in `assets/css/main.css` as CSS custom properties. When adding UI colors, prefer new or existing variables over hard-coded component colors, and verify both automatic system dark mode and explicit light/dark overrides remain readable.

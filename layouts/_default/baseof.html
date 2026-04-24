@@ -65,7 +65,11 @@
       </div>
       <div class="footer-actions" aria-label="Footer actions">
         {{ with site.Params.github }}<a class="footer-action" href="{{ . }}">GitHub</a>{{ end }}
-        <button class="theme-toggle footer-action" type="button" data-theme-toggle aria-label="Theme: System">Theme: System</button>
+        <button class="theme-toggle footer-action" type="button" data-theme-toggle data-theme-mode="system" aria-label="Theme: System">
+          <span class="theme-toggle-icon" aria-hidden="true">
+            <span class="theme-toggle-shape"></span>
+          </span>
+        </button>
       </div>
     </div>
   </footer>
@@ -149,7 +153,7 @@
           document.documentElement.removeAttribute("data-theme");
         }
 
-        button.textContent = labels[preference];
+        button.dataset.themeMode = preference;
         button.setAttribute("aria-label", labels[preference] + ". Switch to " + nextPreference + " theme.");
         button.setAttribute("title", labels[preference]);
       }

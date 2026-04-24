@@ -257,6 +257,98 @@ a {
   outline-offset: 2px;
 }
 
+.theme-toggle.footer-action {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+}
+
+.theme-toggle-icon {
+  position: relative;
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+  color: currentColor;
+}
+
+.theme-toggle-icon::before,
+.theme-toggle-icon::after,
+.theme-toggle-shape,
+.theme-toggle-shape::before,
+.theme-toggle-shape::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.theme-toggle[data-theme-mode="system"] .theme-toggle-shape {
+  left: 0.12rem;
+  top: 0.18rem;
+  width: 1.1rem;
+  height: 0.78rem;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.theme-toggle[data-theme-mode="system"] .theme-toggle-shape::before {
+  left: 0.42rem;
+  top: 0.72rem;
+  width: 0.22rem;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.theme-toggle[data-theme-mode="system"] .theme-toggle-shape::after {
+  left: 0.24rem;
+  top: 1rem;
+  width: 0.62rem;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.theme-toggle[data-theme-mode="light"] .theme-toggle-icon::before {
+  left: 50%;
+  top: 50%;
+  width: 0.66rem;
+  height: 0.66rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.theme-toggle[data-theme-mode="light"] .theme-toggle-icon::after {
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 -0.58rem 0 currentColor,
+    0 0.58rem 0 currentColor,
+    0.58rem 0 0 currentColor,
+    -0.58rem 0 0 currentColor,
+    0.41rem 0.41rem 0 currentColor,
+    -0.41rem 0.41rem 0 currentColor,
+    0.41rem -0.41rem 0 currentColor,
+    -0.41rem -0.41rem 0 currentColor;
+}
+
+.theme-toggle[data-theme-mode="dark"] .theme-toggle-shape {
+  left: 0.23rem;
+  top: 0.12rem;
+  width: 0.92rem;
+  height: 0.92rem;
+  border-radius: 50%;
+  box-shadow: inset 0.3rem -0.18rem 0 currentColor;
+  transform: rotate(-18deg);
+}
+
 .search-toggle {
   display: inline-flex;
   align-items: center;
