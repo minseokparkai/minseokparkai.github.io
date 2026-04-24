@@ -3,6 +3,21 @@
 {{ $mobileToc := replace .TableOfContents `id="TableOfContents"` `id="content-navigator-mobile-list" class="content-navigator-links"` }}
 {{ $desktopToc := replace .TableOfContents `id="TableOfContents"` `id="content-navigator-desktop-list" class="content-navigator-links"` }}
 <div class="{{ if $hasToc }}article-layout article-layout-with-navigator{{ else }}article-layout{{ end }}">
+  {{ if $hasToc }}
+    <aside class="content-navigator-sidebar" aria-label="Post contents">
+      <div class="content-navigator content-navigator-desktop" data-content-navigator>
+        <div class="content-navigator-header">
+          <p class="content-navigator-title">Contents</p>
+          <button class="content-navigator-toggle" type="button" data-content-navigator-toggle aria-controls="content-navigator-desktop-list" aria-expanded="true" aria-label="Hide contents" title="Hide contents">
+            <span class="content-navigator-toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="content-navigator-body" data-content-navigator-body>
+          {{ $desktopToc | safeHTML }}
+        </div>
+      </div>
+    </aside>
+  {{ end }}
   <article class="article">
     <header class="article-header">
       <p class="eyebrow">{{ .Section }}</p>
@@ -36,13 +51,5 @@
       {{ .Content }}
     </div>
   </article>
-  {{ if $hasToc }}
-    <aside class="content-navigator-sidebar" aria-label="Post contents">
-      <div class="content-navigator content-navigator-desktop" data-content-navigator>
-        <p class="content-navigator-title">Contents</p>
-        {{ $desktopToc | safeHTML }}
-      </div>
-    </aside>
-  {{ end }}
 </div>
 {{ end }}
