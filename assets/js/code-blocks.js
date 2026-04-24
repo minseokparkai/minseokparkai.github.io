@@ -47,6 +47,8 @@
     yml: "yml",
     zsh: "sh"
   };
+  var copyAlertDuration = 1800;
+  var copyAlertFadeDuration = 220;
 
   function trimFinalLineBreaks(value) {
     return String(value || "").replace(/(?:\r?\n)+$/, "");
@@ -168,15 +170,44 @@
 
   blocks.forEach(function (block) {
     var copyButton = block.querySelector("[data-code-copy]");
+    var copyAlert = block.querySelector("[data-code-copy-alert]");
     var downloadButton = block.querySelector("[data-code-download]");
     var collapseButton = block.querySelector("[data-code-collapse]");
+    var copyAlertHideTimer;
+    var copyAlertClearTimer;
+
+    function showCopyAlert(message, state) {
+      if (!copyAlert) {
+        return;
+      }
+
+      window.clearTimeout(copyAlertHideTimer);
+      window.clearTimeout(copyAlertClearTimer);
+
+      copyAlert.textContent = message;
+      copyAlert.dataset.codeAlertState = state;
+      copyAlert.classList.add("is-visible");
+
+      copyAlertHideTimer = window.setTimeout(function () {
+        copyAlert.classList.remove("is-visible");
+        copyAlertHideTimer = null;
+
+        copyAlertClearTimer = window.setTimeout(function () {
+          copyAlert.textContent = "";
+          copyAlert.removeAttribute("data-code-alert-state");
+          copyAlertClearTimer = null;
+        }, copyAlertFadeDuration);
+      }, copyAlertDuration);
+    }
 
     if (copyButton) {
       copyButton.addEventListener("click", function () {
         copyText(getSource(block)).then(function () {
           setTemporaryLabel(copyButton, "Copied");
+          showCopyAlert("Code copied", "success");
         }).catch(function () {
           setTemporaryLabel(copyButton, "Copy failed");
+          showCopyAlert("Copy failed", "error");
         });
       });
     }
