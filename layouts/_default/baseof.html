@@ -160,5 +160,7 @@
   </script>
   {{ $searchScript := resources.Get "js/search.js" | minify | fingerprint }}
   <script defer src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}"></script>
+  {{ $codeBlocksScript := resources.Get "js/code-blocks.js" | minify | fingerprint }}
+  <script defer src="{{ $codeBlocksScript.RelPermalink }}" integrity="{{ $codeBlocksScript.Data.Integrity }}"></script>
 </body>
 </html>

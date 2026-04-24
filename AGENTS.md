@@ -76,6 +76,19 @@ Keep search first-party and dependency-free unless the user explicitly asks for 
 
 When changing search behavior, verify the header button, `/` keyboard shortcut, focus behavior, `Esc` close, backdrop close, empty/no-result states, mobile fit, and light/dark/system theme readability.
 
+## Code Blocks
+
+The site has a universal toolbar for fenced Markdown code blocks.
+
+- `layouts/_default/_markup/render-codeblock.html` overrides Hugo fenced-code rendering with a card, language label, download button, copy button, collapse button, highlighted code, and a raw-code JSON payload.
+- `assets/js/code-blocks.js` owns copy, download, filename generation, and collapse/expand behavior.
+- `assets/css/main.css` owns the code block card, toolbar, icon buttons, token colors, responsive behavior, and light/dark theme variables.
+- `layouts/_default/baseof.html` fingerprints and loads the code block script after the search script.
+
+Keep this feature first-party and dependency-free. Use Hugo's `transform.HighlightCodeBlock` so Chroma highlighting options still work. Copy/download actions should use the original fence contents, not the syntax-highlighted DOM text, and should trim only trailing fence line breaks. For example, an `html` fence in `content/posts/01-codex-primer.md` should copy exactly `<button>날 클릭해</button>` and download as `01-codex-primer-code-1.html`.
+
+When changing code block behavior, verify language labels, copy, download extension fallback to `.txt`, collapse/expand ARIA state, keyboard focus states, horizontal scrolling, mobile fit, and light/dark/system theme readability.
+
 ## Dark Mode
 
 The site has a three-state theme control in `layouts/_default/baseof.html`.
