@@ -66,6 +66,8 @@ The site uses Hugo taxonomies for post discovery:
 - `/topics/` is a custom landing page that combines categories and tags with post counts.
 - `layouts/topics/list.html` renders the Topics page from `site.Taxonomies.categories` and `site.Taxonomies.tags`.
 - `layouts/taxonomy/term.html` renders individual tag/category archive pages.
+- `layouts/_default/single.html` renders post header taxonomy toggles as links, with categories first and tags second in frontmatter order.
+- `assets/css/main.css` styles those toggles; keep category toggles in the warm/orange palette and tag toggles in the teal accent palette so the two taxonomy types stay visually distinct.
 
 Do not add a separate `topics` taxonomy unless the user explicitly asks for a new content model. When borrowing ideas from reference sites, use them as behavior and UX inspiration only; implement the code in the style of this repository instead of copying source markup, styles, or theme-specific classes.
 

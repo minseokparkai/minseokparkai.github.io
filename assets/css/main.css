@@ -24,6 +24,16 @@
   --hero-button-border: rgba(255, 255, 255, 0.48);
   --tag-border: rgba(15, 118, 110, 0.25);
   --tag-bg: transparent;
+  --taxonomy-tag-bg: rgba(15, 118, 110, 0.1);
+  --taxonomy-tag-border: rgba(15, 118, 110, 0.3);
+  --taxonomy-tag-ink: var(--accent-strong);
+  --taxonomy-tag-hover-bg: rgba(15, 118, 110, 0.16);
+  --taxonomy-tag-hover-border: rgba(15, 118, 110, 0.5);
+  --taxonomy-category-bg: rgba(196, 102, 31, 0.12);
+  --taxonomy-category-border: rgba(196, 102, 31, 0.34);
+  --taxonomy-category-ink: #8a3f0f;
+  --taxonomy-category-hover-bg: rgba(196, 102, 31, 0.18);
+  --taxonomy-category-hover-border: rgba(196, 102, 31, 0.52);
   --topic-count-bg: rgba(15, 118, 110, 0.1);
   --topic-hover-border: rgba(15, 118, 110, 0.45);
   --topic-shadow: 0 10px 28px rgba(31, 41, 55, 0.08);
@@ -71,6 +81,16 @@
     --hero-button-ink: #111416;
     --tag-border: rgba(94, 234, 212, 0.28);
     --tag-bg: rgba(94, 234, 212, 0.08);
+    --taxonomy-tag-bg: rgba(94, 234, 212, 0.1);
+    --taxonomy-tag-border: rgba(94, 234, 212, 0.32);
+    --taxonomy-tag-ink: var(--accent-strong);
+    --taxonomy-tag-hover-bg: rgba(94, 234, 212, 0.16);
+    --taxonomy-tag-hover-border: rgba(94, 234, 212, 0.5);
+    --taxonomy-category-bg: rgba(246, 193, 119, 0.12);
+    --taxonomy-category-border: rgba(246, 193, 119, 0.38);
+    --taxonomy-category-ink: var(--warm);
+    --taxonomy-category-hover-bg: rgba(246, 193, 119, 0.18);
+    --taxonomy-category-hover-border: rgba(246, 193, 119, 0.6);
     --topic-count-bg: rgba(94, 234, 212, 0.12);
     --topic-hover-border: rgba(94, 234, 212, 0.45);
     --topic-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
@@ -114,6 +134,16 @@
   --hero-button-ink: #111416;
   --tag-border: rgba(94, 234, 212, 0.28);
   --tag-bg: rgba(94, 234, 212, 0.08);
+  --taxonomy-tag-bg: rgba(94, 234, 212, 0.1);
+  --taxonomy-tag-border: rgba(94, 234, 212, 0.32);
+  --taxonomy-tag-ink: var(--accent-strong);
+  --taxonomy-tag-hover-bg: rgba(94, 234, 212, 0.16);
+  --taxonomy-tag-hover-border: rgba(94, 234, 212, 0.5);
+  --taxonomy-category-bg: rgba(246, 193, 119, 0.12);
+  --taxonomy-category-border: rgba(246, 193, 119, 0.38);
+  --taxonomy-category-ink: var(--warm);
+  --taxonomy-category-hover-bg: rgba(246, 193, 119, 0.18);
+  --taxonomy-category-hover-border: rgba(246, 193, 119, 0.6);
   --topic-count-bg: rgba(94, 234, 212, 0.12);
   --topic-hover-border: rgba(94, 234, 212, 0.45);
   --topic-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
@@ -817,9 +847,71 @@ body.search-open {
 
 .article-meta {
   display: flex;
+  align-items: center;
   gap: 0.55rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+}
+
+.article-taxonomies {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.taxonomy-toggle {
+  --taxonomy-toggle-bg: var(--taxonomy-tag-bg);
+  --taxonomy-toggle-border: var(--taxonomy-tag-border);
+  --taxonomy-toggle-ink: var(--taxonomy-tag-ink);
+  --taxonomy-toggle-hover-bg: var(--taxonomy-tag-hover-bg);
+  --taxonomy-toggle-hover-border: var(--taxonomy-tag-hover-border);
+
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 2rem;
+  border: 1px solid var(--taxonomy-toggle-border);
+  border-radius: 8px;
+  background: var(--taxonomy-toggle-bg);
+  padding: 0.3rem 0.65rem;
+  color: var(--taxonomy-toggle-ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.taxonomy-toggle-category {
+  --taxonomy-toggle-bg: var(--taxonomy-category-bg);
+  --taxonomy-toggle-border: var(--taxonomy-category-border);
+  --taxonomy-toggle-ink: var(--taxonomy-category-ink);
+  --taxonomy-toggle-hover-bg: var(--taxonomy-category-hover-bg);
+  --taxonomy-toggle-hover-border: var(--taxonomy-category-hover-border);
+}
+
+.taxonomy-toggle-tag {
+  --taxonomy-toggle-bg: var(--taxonomy-tag-bg);
+  --taxonomy-toggle-border: var(--taxonomy-tag-border);
+  --taxonomy-toggle-ink: var(--taxonomy-tag-ink);
+  --taxonomy-toggle-hover-bg: var(--taxonomy-tag-hover-bg);
+  --taxonomy-toggle-hover-border: var(--taxonomy-tag-hover-border);
+}
+
+.taxonomy-toggle span {
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-toggle:hover,
+.taxonomy-toggle:focus-visible {
+  border-color: var(--taxonomy-toggle-hover-border);
+  background: var(--taxonomy-toggle-hover-bg);
+  color: var(--taxonomy-toggle-ink);
+}
+
+.taxonomy-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .article-body {

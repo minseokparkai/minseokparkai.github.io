@@ -5,9 +5,20 @@
     <h1>{{ .Title }}</h1>
     <div class="article-meta">
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-      {{ with .Params.tags }}
+      {{ if or .Params.categories .Params.tags }}
         <span aria-hidden="true">/</span>
-        <span>{{ delimit . ", " }}</span>
+        <nav class="article-taxonomies" aria-label="Post categories and tags">
+          {{ range .Params.categories }}
+            <a class="taxonomy-toggle taxonomy-toggle-category" href="{{ printf "/categories/%s/" (. | urlize) | relURL }}" aria-label="Category: {{ . }}">
+              <span>{{ . }}</span>
+            </a>
+          {{ end }}
+          {{ range .Params.tags }}
+            <a class="taxonomy-toggle taxonomy-toggle-tag" href="{{ printf "/tags/%s/" (. | urlize) | relURL }}" aria-label="Tag: {{ . }}">
+              <span>{{ . }}</span>
+            </a>
+          {{ end }}
+        </nav>
       {{ end }}
     </div>
   </header>
