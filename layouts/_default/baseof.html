@@ -172,5 +172,7 @@
   <script defer src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}"></script>
   {{ $codeBlocksScript := resources.Get "js/code-blocks.js" | minify | fingerprint }}
   <script defer src="{{ $codeBlocksScript.RelPermalink }}" integrity="{{ $codeBlocksScript.Data.Integrity }}"></script>
+  {{ $contentNavigatorScript := resources.Get "js/content-navigator.js" | minify | fingerprint }}
+  <script defer src="{{ $contentNavigatorScript.RelPermalink }}" integrity="{{ $contentNavigatorScript.Data.Integrity }}"></script>
 </body>
 </html>

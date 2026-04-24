@@ -1,29 +1,48 @@
 {{ define "main" }}
-<article class="article">
-  <header class="article-header">
-    <p class="eyebrow">{{ .Section }}</p>
-    <h1>{{ .Title }}</h1>
-    <div class="article-meta">
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-      {{ if or .Params.categories .Params.tags }}
-        <span aria-hidden="true">/</span>
-        <nav class="article-taxonomies" aria-label="Post categories and tags">
-          {{ range .Params.categories }}
-            <a class="taxonomy-toggle taxonomy-toggle-category" href="{{ printf "/categories/%s/" (. | urlize) | relURL }}" aria-label="Category: {{ . }}">
-              <span>{{ . }}</span>
-            </a>
-          {{ end }}
-          {{ range .Params.tags }}
-            <a class="taxonomy-toggle taxonomy-toggle-tag" href="{{ printf "/tags/%s/" (. | urlize) | relURL }}" aria-label="Tag: {{ . }}">
-              <span>{{ . }}</span>
-            </a>
-          {{ end }}
-        </nav>
-      {{ end }}
+{{ $hasToc := and (eq .Section "posts") (gt (len (findRE "<a\\s" .TableOfContents)) 0) }}
+{{ $mobileToc := replace .TableOfContents `id="TableOfContents"` `id="content-navigator-mobile-list" class="content-navigator-links"` }}
+{{ $desktopToc := replace .TableOfContents `id="TableOfContents"` `id="content-navigator-desktop-list" class="content-navigator-links"` }}
+<div class="{{ if $hasToc }}article-layout article-layout-with-navigator{{ else }}article-layout{{ end }}">
+  <article class="article">
+    <header class="article-header">
+      <p class="eyebrow">{{ .Section }}</p>
+      <h1>{{ .Title }}</h1>
+      <div class="article-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+        {{ if or .Params.categories .Params.tags }}
+          <span aria-hidden="true">/</span>
+          <nav class="article-taxonomies" aria-label="Post categories and tags">
+            {{ range .Params.categories }}
+              <a class="taxonomy-toggle taxonomy-toggle-category" href="{{ printf "/categories/%s/" (. | urlize) | relURL }}" aria-label="Category: {{ . }}">
+                <span>{{ . }}</span>
+              </a>
+            {{ end }}
+            {{ range .Params.tags }}
+              <a class="taxonomy-toggle taxonomy-toggle-tag" href="{{ printf "/tags/%s/" (. | urlize) | relURL }}" aria-label="Tag: {{ . }}">
+                <span>{{ . }}</span>
+              </a>
+            {{ end }}
+          </nav>
+        {{ end }}
+      </div>
+    </header>
+    {{ if $hasToc }}
+      <details class="content-navigator content-navigator-mobile" data-content-navigator-mobile>
+        <summary class="content-navigator-summary">Contents</summary>
+        {{ $mobileToc | safeHTML }}
+      </details>
+    {{ end }}
+    <div class="article-body">
+      {{ .Content }}
     </div>
-  </header>
-  <div class="article-body">
-    {{ .Content }}
-  </div>
-</article>
+  </article>
+  {{ if $hasToc }}
+    <aside class="content-navigator-sidebar" aria-label="Post contents">
+      <div class="content-navigator content-navigator-desktop" data-content-navigator>
+        <p class="content-navigator-title">Contents</p>
+        {{ $desktopToc | safeHTML }}
+      </div>
+    </aside>
+  {{ end }}
+</div>
 {{ end }}
