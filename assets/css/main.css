@@ -889,6 +889,7 @@ body.search-open {
 }
 
 .content-navigator-sidebar {
+  align-self: stretch;
   padding: 4rem 0;
 }
 
@@ -1042,6 +1043,13 @@ body.search-open {
   background: var(--taxonomy-tag-bg);
   box-shadow: inset 3px 0 0 var(--accent);
   color: var(--accent-strong);
+}
+
+.content-navigator-desktop .content-navigator-links a.is-active {
+  background: var(--taxonomy-tag-bg);
+  box-shadow: inset 4px 0 0 var(--accent);
+  color: var(--accent-strong);
+  font-weight: 900;
 }
 
 .content-navigator-mobile {
