@@ -15,6 +15,13 @@ This is a Hugo static blog published at `https://minseokparkai.github.io/`.
 - `.github/workflows/hugo.yaml`: GitHub Pages deployment workflow.
 - `public/`, `resources/`, `.hugo_build.lock`, and `*.log` are generated or local-only files and should not be committed.
 
+## Header Navigation
+
+- `layouts/_default/baseof.html` owns the header and main navigation markup.
+- `assets/css/main.css` owns the header positioning, responsive navigation layout, and fixed mobile offset.
+- Keep desktop and wider tablet widths above `820px` using the existing sticky header behavior.
+- At `max-width: 820px`, the header is fixed to the top; keep `--mobile-header-offset` in sync with the rendered mobile header height so content, skip links, and anchor targets are not hidden under it.
+
 ## Content
 
 Posts live in `content/posts/`.
