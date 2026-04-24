@@ -36,6 +36,10 @@ summaryLength = 24
     weight = 20
 
 [markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
   [markup.highlight]
     noClasses = false
     style = "github"
