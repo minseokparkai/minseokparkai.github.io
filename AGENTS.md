@@ -11,6 +11,7 @@ This is a Hugo static blog published at `https://minseokparkai.github.io/`.
 - `layouts/`: custom Hugo templates; there is no external theme dependency.
 - `assets/css/main.css`: Hugo-processed stylesheet.
 - `assets/js/search.js`: Hugo-processed client-side search script.
+- `assets/js/comments.js`: Hugo-processed Utterances loader for post comments.
 - `static/`: files copied directly to the built site, including images.
 - `.github/workflows/hugo.yaml`: GitHub Pages deployment workflow.
 - `public/`, `resources/`, `.hugo_build.lock`, and `*.log` are generated or local-only files and should not be committed.
@@ -80,6 +81,7 @@ The site uses Hugo taxonomies for post discovery:
 - `layouts/topics/list.html` renders the Topics page from `site.Taxonomies.categories` and `site.Taxonomies.tags`.
 - `layouts/taxonomy/term.html` renders individual tag/category archive pages.
 - `layouts/_default/single.html` renders post header taxonomy toggles as links, with categories first and tags second in frontmatter order.
+- `layouts/partials/post-card.html` renders card-level taxonomy buttons from categories first and tags second, capped at 5 total items.
 - `assets/css/main.css` styles those toggles; keep category toggles in the warm/orange palette and tag toggles in the teal accent palette so the two taxonomy types stay visually distinct.
 
 Do not add a separate `topics` taxonomy unless the user explicitly asks for a new content model. When borrowing ideas from reference sites, use them as behavior and UX inspiration only; implement the code in the style of this repository instead of copying source markup, styles, or theme-specific classes.
@@ -97,6 +99,21 @@ The site has a lightweight posts-only search overlay.
 Keep search first-party and dependency-free unless the user explicitly asks for a richer search engine. Do not copy Hugo theme bundles or reference-site source. Search results should stay focused on posts; do not include About, Topics, tags, categories, or generated listing pages unless the user asks to expand the scope.
 
 When changing search behavior, verify the header button, `/` keyboard shortcut, focus behavior, `Esc` close, backdrop close, empty/no-result states, mobile fit, and light/dark/system theme readability.
+
+## Comments
+
+Post comments use Utterances, backed by GitHub Issues in `minseokparkai/minseokparkai.github.io`.
+
+- `hugo.toml` owns `[params.comments]`, including `enabled`, `repo`, `issueTerm`, and `label`.
+- `layouts/partials/comments.html` renders the comments mount only for pages in `content/posts/`.
+- `layouts/_default/single.html` includes the comments partial below `.article-body`.
+- `layouts/_default/baseof.html` fingerprints and loads `assets/js/comments.js` only on post pages when comments are enabled.
+- `assets/js/comments.js` injects `https://utteranc.es/client.js`, uses `issue-term="pathname"` for post-specific threads, and maps the site theme to `github-light` or `github-dark`.
+- `assets/css/main.css` owns the comments section spacing and Utterances width override.
+
+Keep comments post-only unless the user explicitly asks to add comments to pages or listings. Do not add a custom backend, database, OAuth app, or client-side GitHub API code for comments unless requested; GitHub login and posting are handled by Utterances. If comment posting does not work after deployment, check that GitHub Issues are enabled on the repo and that the Utterances GitHub app is installed/authorized for the repo.
+
+When changing comment behavior, verify post-specific `pathname` threads, no comments on Home/About/Topics/tag/category/list pages, light/dark/system theme readability, theme switching after the iframe loads, mobile fit, and the fallback/no-JavaScript text.
 
 ## Code Blocks
 
@@ -185,8 +202,10 @@ Before saying a task is done, Codex should check:
 - New or changed posts have valid frontmatter, a clear title, a description, tags/categories when useful, and the correct `draft` value.
 - Internal links and image paths are valid for Hugo.
 - Taxonomy or Topics changes preserve `/tags/`, `/categories/`, and `/topics/` URLs.
+- Post card taxonomy changes preserve category-first/tag-second ordering, the 5-item maximum, and clickable taxonomy archive links.
 - Search changes preserve the posts-only `/index.json` contract unless the user asks for a broader index.
 - Content navigator changes preserve posts-only rendering, left-side desktop placement, collapse persistence, and scroll-synced active tracking.
+- Comment changes preserve post-only rendering and the `pathname` Utterances issue mapping unless the user asks for a broader scope.
 - `hugo --renderToMemory --panicOnWarning --printPathWarnings` passes.
 - `hugo --gc --minify` passes when publishing or changing templates/config/styles.
 - Deployment-impacting changes respect the GitHub Pages workflow and do not require committing generated files.

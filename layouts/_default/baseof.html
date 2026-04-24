@@ -174,5 +174,11 @@
   <script defer src="{{ $codeBlocksScript.RelPermalink }}" integrity="{{ $codeBlocksScript.Data.Integrity }}"></script>
   {{ $contentNavigatorScript := resources.Get "js/content-navigator.js" | minify | fingerprint }}
   <script defer src="{{ $contentNavigatorScript.RelPermalink }}" integrity="{{ $contentNavigatorScript.Data.Integrity }}"></script>
+  {{ with site.Params.comments }}
+    {{ if and (eq $.Section "posts") .enabled .repo }}
+      {{ $commentsScript := resources.Get "js/comments.js" | minify | fingerprint }}
+      <script defer src="{{ $commentsScript.RelPermalink }}" integrity="{{ $commentsScript.Data.Integrity }}"></script>
+    {{ end }}
+  {{ end }}
 </body>
 </html>

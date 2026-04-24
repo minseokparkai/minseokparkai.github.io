@@ -1,14 +1,25 @@
 <article class="post-card">
-  <a href="{{ .RelPermalink }}">
+  <a class="post-card-link" href="{{ .RelPermalink }}">
     <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
     <h3>{{ .Title }}</h3>
     <p>{{ with .Params.description }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }}</p>
-    {{ with .Params.tags }}
-      <ul class="tag-list" aria-label="Tags">
-        {{ range first 3 . }}
-          <li>{{ . }}</li>
-        {{ end }}
-      </ul>
-    {{ end }}
   </a>
+  {{ $taxonomies := slice }}
+  {{ range .Params.categories }}
+    {{ $taxonomies = $taxonomies | append (dict "name" . "url" (printf "/categories/%s/" (. | urlize) | relURL) "class" "taxonomy-toggle-category" "label" "Category") }}
+  {{ end }}
+  {{ range .Params.tags }}
+    {{ $taxonomies = $taxonomies | append (dict "name" . "url" (printf "/tags/%s/" (. | urlize) | relURL) "class" "taxonomy-toggle-tag" "label" "Tag") }}
+  {{ end }}
+  {{ with $taxonomies }}
+    <ul class="tag-list" aria-label="Post categories and tags">
+      {{ range first 5 . }}
+        <li>
+          <a class="taxonomy-toggle {{ .class }}" href="{{ .url }}" aria-label="{{ .label }}: {{ .name }}">
+            <span>{{ .name }}</span>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ end }}
 </article>
