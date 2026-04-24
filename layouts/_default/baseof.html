@@ -41,6 +41,15 @@
           <a href="{{ .URL }}">{{ .Name }}</a>
         {{ end }}
         {{ with site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+        <button class="search-toggle" type="button" data-search-open aria-controls="site-search" aria-haspopup="dialog">
+          <span class="search-toggle-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m16 16 4 4"></path>
+            </svg>
+          </span>
+          <span>Search</span>
+        </button>
         <button class="theme-toggle" type="button" data-theme-toggle aria-label="Theme: System">Theme: System</button>
       </div>
     </nav>
@@ -54,6 +63,34 @@
     <p>Built with Hugo. Published from GitHub.</p>
     <p>&copy; {{ now.Year }} {{ site.Params.author }}.</p>
   </footer>
+  {{ $searchIndex := "index.json" | relURL }}
+  {{ with site.Home.OutputFormats.Get "json" }}
+    {{ $searchIndex = .RelPermalink }}
+  {{ end }}
+  <div class="search-overlay" id="site-search" data-search-overlay data-search-index="{{ $searchIndex }}" hidden>
+    <section class="search-dialog" role="dialog" aria-modal="true" aria-labelledby="site-search-title">
+      <header class="search-dialog-header">
+        <form class="search-form" data-search-form>
+          <label class="search-label" for="site-search-query" id="site-search-title">Search posts</label>
+          <span class="search-field-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m16 16 4 4"></path>
+            </svg>
+          </span>
+          <input id="site-search-query" class="search-input" type="search" data-search-input autocomplete="off" spellcheck="false" placeholder="Search posts" aria-describedby="site-search-status">
+        </form>
+        <button class="search-close" type="button" data-search-close aria-label="Close search">
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="m6 6 12 12"></path>
+            <path d="m18 6-12 12"></path>
+          </svg>
+        </button>
+      </header>
+      <p class="search-status" id="site-search-status" data-search-status role="status" aria-live="polite">Type to search posts.</p>
+      <ul class="search-results" data-search-results></ul>
+    </section>
+  </div>
   <script>
     (function () {
       var storageKey = "theme-preference";
@@ -121,5 +158,7 @@
       });
     }());
   </script>
+  {{ $searchScript := resources.Get "js/search.js" | minify | fingerprint }}
+  <script defer src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}"></script>
 </body>
 </html>
