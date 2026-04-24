@@ -1,0 +1,51 @@
+{{ define "main" }}
+<section class="page-heading">
+  <p class="eyebrow">Browse</p>
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</section>
+
+<section class="section compact topics-page">
+  <section class="topic-group" aria-labelledby="categories-heading">
+    <div class="section-heading">
+      <p class="eyebrow">Categories</p>
+      <h2 id="categories-heading">Categories</h2>
+    </div>
+    {{ with site.Taxonomies.categories }}
+      <ul class="topic-list" aria-label="Categories">
+        {{ range .Alphabetical }}
+          <li>
+            <a class="topic-pill" href="{{ .Page.RelPermalink }}">
+              <span>{{ .Page.LinkTitle }}</span>
+              <span class="topic-count">{{ .Count }}</span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    {{ else }}
+      <p class="empty-note">No categories yet.</p>
+    {{ end }}
+  </section>
+
+  <section class="topic-group" aria-labelledby="tags-heading">
+    <div class="section-heading">
+      <p class="eyebrow">Tags</p>
+      <h2 id="tags-heading">Tags</h2>
+    </div>
+    {{ with site.Taxonomies.tags }}
+      <ul class="topic-list" aria-label="Tags">
+        {{ range .Alphabetical }}
+          <li>
+            <a class="topic-pill" href="{{ .Page.RelPermalink }}">
+              <span>{{ .Page.LinkTitle }}</span>
+              <span class="topic-count">{{ .Count }}</span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    {{ else }}
+      <p class="empty-note">No tags yet.</p>
+    {{ end }}
+  </section>
+</section>
+{{ end }}

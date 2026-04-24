@@ -24,6 +24,10 @@ summaryLength = 24
     pageRef = "/posts"
     weight = 10
   [[menu.main]]
+    name = "Topics"
+    pageRef = "/topics"
+    weight = 15
+  [[menu.main]]
     name = "About"
     pageRef = "/about"
     weight = 20

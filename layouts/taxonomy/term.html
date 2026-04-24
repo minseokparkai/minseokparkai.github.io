@@ -1,12 +1,14 @@
 {{ define "main" }}
 <section class="page-heading">
-  <p class="eyebrow">Tag</p>
+  <p class="eyebrow">{{ .Data.Singular | default "Topic" | humanize }}</p>
   <h1>{{ .Title }}</h1>
 </section>
 <section class="section compact">
   <div class="post-list">
     {{ range .Pages }}
       {{ partial "post-card.html" . }}
+    {{ else }}
+      <p>No entries yet.</p>
     {{ end }}
   </div>
 </section>
