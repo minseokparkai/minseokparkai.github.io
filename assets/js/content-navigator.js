@@ -72,11 +72,12 @@
   }
 
   function revealActiveDesktopLink(activeLink) {
-    var navigatorRect;
+    var scrollContainer = navigatorBody;
+    var containerRect;
     var linkRect;
     var padding = 12;
 
-    if (!desktopNavigator || !activeLink || !desktopNavigator.getClientRects().length) {
+    if (!scrollContainer || !activeLink || !scrollContainer.getClientRects().length) {
       return;
     }
 
@@ -84,13 +85,13 @@
       return;
     }
 
-    navigatorRect = desktopNavigator.getBoundingClientRect();
+    containerRect = scrollContainer.getBoundingClientRect();
     linkRect = activeLink.getBoundingClientRect();
 
-    if (linkRect.top < navigatorRect.top + padding) {
-      desktopNavigator.scrollTop -= navigatorRect.top + padding - linkRect.top;
-    } else if (linkRect.bottom > navigatorRect.bottom - padding) {
-      desktopNavigator.scrollTop += linkRect.bottom - (navigatorRect.bottom - padding);
+    if (linkRect.top < containerRect.top + padding) {
+      scrollContainer.scrollTop -= containerRect.top + padding - linkRect.top;
+    } else if (linkRect.bottom > containerRect.bottom - padding) {
+      scrollContainer.scrollTop += linkRect.bottom - (containerRect.bottom - padding);
     }
   }
 
